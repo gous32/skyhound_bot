@@ -20,13 +20,14 @@ class TriggerWrapper(object):
 
 
 class Skyhound(object):
-    def __init__(self, bot, config, state, logger):
+    def __init__(self, bot, config, state, logger, silent_time):
         self.Bot = bot
         self.Config = config
         self.State = state
         self.Logger = logger
         self.Triggers = []
         self.LastFailures = {}
+        self.SilenceTill = time.time() + silent_time
 
     def Register(self, triggerCls, name, *args, **kwargs):
         config = self.Config.get(name, {})
@@ -49,6 +50,8 @@ class Skyhound(object):
 
 
     def Process(self, message):
+        if time.time() < self.SilenceTill:
+            return
         self.Logger.debug("Got message %s", str(message))
 
         chat = message.chat.id

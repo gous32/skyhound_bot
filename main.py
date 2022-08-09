@@ -34,6 +34,10 @@ def parse_args():
     parser.add_argument("--token-path", type=str, help="Telegram token file path")
     parser.add_argument("--token-env", type=str, help="Telegram token environment variable")
 
+    # если бот был выключен, при включении в него попадут все сообщения, которые он пропустил, и он будет орать
+    # начальная пауза позволяет этого избежать
+    parser.add_argument("--silent-time", type=int, default=3, help="Initial silence time period")
+
     parser.add_argument('-v', "--verbose", action='store_true', help="Verbose")
     parser.add_argument("--super-verbose", action='store_true', help="Super verbose")
 
@@ -175,7 +179,7 @@ def main():
     state = StateHolder(args.state)
     SetGlobalState(state)
 
-    SkyhoundInstance = Skyhound(bot, config, state, logger)
+    SkyhoundInstance = Skyhound(bot, config, state, logger, args.silent_time)
     CreateTriggers(args)
 
     @bot.message_handler(content_types=['photo', 'text'])
