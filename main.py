@@ -22,6 +22,7 @@ from triggers.bard import BardTrigger
 from triggers.roboselfie import RoboSelfieTrigger
 from triggers.stats import StatsTrigger
 from triggers.news import NewsTrigger
+from triggers.zaryadka import ZaryadkaTrigger
 
 
 def parse_args():
@@ -114,22 +115,30 @@ def CreateTriggers(args):
         ])
     ]))
 
+    # # Зарядка+
+    # SkyhoundInstance.Register(
+    #     EchoTrigger,
+    #     "zaryadka",
+    #     [
+    #         'А мог(ла) бы вместо этого вкусно покушать или сладко поспать!',
+    #         'Так держать!',
+    #     ],
+    #     flt.AllOf([
+    #         flt.ContainsAny(['зарядка+'])
+    #     ]),
+    #     proba=100
+    # )
     # Зарядка+
     SkyhoundInstance.Register(
-        EchoTrigger,
-        "zaryadka",
-        'А мог(ла) бы вместо этого вкусно покушать или сладко поспать!',
-        flt.AllOf([
-            flt.ContainsAny(['зарядка+'])
-        ]),
-        proba=100
+        ZaryadkaTrigger,
+        "zaryadka"
     )
 
     # Вопрос+
     SkyhoundInstance.Register(
         EchoTrigger,
         "the_question",
-        'Ты!',
+        ['Ты!', 'Я!'],
         flt.ContainsAll(['кто', "пидор"])
     )
 
@@ -160,7 +169,7 @@ def main():
     bot=telebot.TeleBot(GetToken(args))
 
     # bot.send_message(id, "msg")
-    # bot.send_message(-1001653127007, "Мой хостинг где-то в Италии. А вы где живёте?")
+    # bot.send_message(-1001653127007, "Я не понимаю человеческую речь, но мне нравится твой голос. И карты красивые")
 
     config = json.loads(ReadFileSafe(args.config, "{}"))
     state = StateHolder(args.state)

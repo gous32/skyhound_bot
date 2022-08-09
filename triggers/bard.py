@@ -35,7 +35,7 @@ class BardTrigger(MultiTrigger):
 
 
     def Scream(self, message, chat_state):
-        if 1000 * random.random() > chat_state.get("proba", 10):
+        if 1000 * random.random() > chat_state.get("proba", 5):
             return False
 
         return self.ForceScream(message, chat_state)

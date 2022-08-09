@@ -5,10 +5,12 @@ import random
 
 
 class EchoTrigger(FilteredTrigger):
-    def __init__(self, magic, caption, filters):
+    def __init__(self, magic, captions, filters):
         super().__init__(magic, filters)
-        self.Caption = caption
+        if type(captions) != list:
+            captions = [captions]
+        self.Captions = captions
 
     def Process(self, message, chat_state):
-        self.Bot.send_message(message.chat.id, self.Caption)
+        self.Bot.send_message(message.chat.id, random.choice(self.Captions))
 
