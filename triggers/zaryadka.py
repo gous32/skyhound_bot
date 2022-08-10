@@ -1,4 +1,5 @@
 from core.trigger import MultiTrigger
+from core.state import GetGlobalState
 import core.filters as flt
 import util
 import random
@@ -10,9 +11,11 @@ class ZaryadkaTrigger(MultiTrigger):
         super().__init__(magic)
         self.AddScenario(flt.ContainsAny(["зарядка+"]), self.OnZaryadka)
         self.AddScenario(flt.ContainsAny(["фишбургер+"]), self.OnFishburger)
+        self.AddScenario(flt.ContainsAny(["кофе+"]), self.OnCoffee)
 
         self.State["zaryad"] = self.State.get("zaryad", {})
         self.State["fish"] = self.State.get("fish", {})
+        self.State["coffee"] = self.State.get("coffee", {})
 
 
     def OnZaryadka(self, message, chat_state):
@@ -20,6 +23,11 @@ class ZaryadkaTrigger(MultiTrigger):
 
     def OnFishburger(self, message, chat_state):
         self.SayAboutIt(message, self.State['fish'], "Это ваш первый фишбургер", "С вашего последнего фишбургера")
+
+    def OnCoffee(self, message, chat_state):
+        if not GetGlobalState().IsSuperAdmin(message) and not GetGlobalState().IsChatBotAdmin(message):
+            return False
+        self.SayAboutIt(message, self.State['coffee'], "Повелитель, это ваш первый кофе", "Повелитель, с последней чашки кофе")
 
     def SayAboutIt(self, message, state, itIsFirst, fromYourLast):
         id = str(message.from_user.id)
