@@ -25,9 +25,9 @@ class ZaryadkaTrigger(MultiTrigger):
         self.SayAboutIt(message, self.State['fish'], "Это ваш первый фишбургер", "С вашего последнего фишбургера")
 
     def OnCoffee(self, message, chat_state):
-        if not GetGlobalState().IsSuperAdmin(message) and not GetGlobalState().IsChatBotAdmin(message):
+        if message.chat.id != -1001653127007:
             return False
-        self.SayAboutIt(message, self.State['coffee'], "Повелитель, это ваш первый кофе", "Повелитель, с последней чашки кофе")
+        self.SayAboutIt(message, self.State['coffee'], "Слышь ты, это твой первый кофе", "Слышь ты, с последней чашки кофе")
 
     def SayAboutIt(self, message, state, itIsFirst, fromYourLast):
         id = str(message.from_user.id)

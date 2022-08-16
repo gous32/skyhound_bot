@@ -53,4 +53,4 @@ class Timer(object):
 
     def Stop(self):
         self.Started = False
-        self.Thread.join(10)
+        self.Thread.join(3)

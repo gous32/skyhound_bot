@@ -4,6 +4,7 @@ import argparse
 
 import telebot
 from telebot import types
+from telebot import apihelper
 import json
 import logging
 import random
@@ -23,7 +24,9 @@ from triggers.roboselfie import RoboSelfieTrigger
 from triggers.stats import StatsTrigger
 from triggers.news import NewsTrigger
 from triggers.zaryadka import ZaryadkaTrigger
+from triggers.segfault import SegfaultTrigger
 
+apihelper.SESSION_TIME_TO_LIVE = 5 * 60
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -57,6 +60,9 @@ def CreateTriggers(args):
 
     # Статы
     SkyhoundInstance.Register(StatsTrigger, "stats")
+
+    # Статы
+    SkyhoundInstance.Register(SegfaultTrigger, "segfault", flt.ContainsAll(["Добби", "умереть"]))
 
     # Берт
     SkyhoundInstance.Register(
@@ -186,8 +192,8 @@ def main():
     def process_message(message):
         SkyhoundInstance.Process(message)
 
-    bot.polling(none_stop=True)
-
+    bot.infinity_polling()
+    print("Got out of bot polling")
     GetTimer().Stop()
 
 
