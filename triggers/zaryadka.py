@@ -12,10 +12,12 @@ class ZaryadkaTrigger(MultiTrigger):
         self.AddScenario(flt.ContainsAny(["зарядка+"]), self.OnZaryadka)
         self.AddScenario(flt.ContainsAny(["фишбургер+"]), self.OnFishburger)
         self.AddScenario(flt.ContainsAny(["кофе+"]), self.OnCoffee)
+        self.AddScenario(flt.ContainsAny(["пиво+"]), self.OnPivo)
 
         self.State["zaryad"] = self.State.get("zaryad", {})
         self.State["fish"] = self.State.get("fish", {})
         self.State["coffee"] = self.State.get("coffee", {})
+        self.State["pivo"] = self.State.get("pivo", {})
 
 
     def OnZaryadka(self, message, chat_state):
@@ -28,6 +30,16 @@ class ZaryadkaTrigger(MultiTrigger):
         if message.chat.id != -1001653127007:
             return False
         self.SayAboutIt(message, self.State['coffee'], "Слышь ты, это твой первый кофе", "Слышь ты, с последней чашки кофе")
+
+    def OnPivo(self, message, chat_state):
+        if message.chat.id != -1001653127007:
+            return False
+        self.SayAboutIt(
+            message,
+            self.State['pivo'],
+            "Полиция пива сообщает, что это твоё первое пиво",
+            "Ангел всенародного похмелья просил передать, что с твоего последнего пива"
+        )
 
     def SayAboutIt(self, message, state, itIsFirst, fromYourLast):
         id = str(message.from_user.id)
